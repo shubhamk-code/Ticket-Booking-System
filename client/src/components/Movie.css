@@ -1,0 +1,19 @@
+.movie_component {
+    /* width: 98vw;
+    height: 90vh; */
+    align-items: center;
+    justify-content: center;
+    /* background-color: red; */
+    /* color: red !important; */
+}
+
+.card {
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.card_image {
+    height: 150px;
+}

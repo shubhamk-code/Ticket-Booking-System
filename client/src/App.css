@@ -1,0 +1,103 @@
+img {
+  height: 50px;
+  width: 50px;
+}
+
+.test {
+  color: red;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  width: 80vw;
+}
+
+.signin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  width: 80vw;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  height: 70vh;
+}
+
+.signupImg img {
+  height: 40vh;
+  width: 30vw;
+}
+
+.signinImg img {
+  height: 40vh;
+  width: 30vw;
+}
+
+.signupCont {
+  width: 45vw;
+  height: 65vh;
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
+
+.signinCont {
+  width: 45vw;
+  height: 65vh;
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
+
+.signupForm {
+  width: 35vw;
+}
+
+.signinForm {
+  width: 35vw;
+}
+
+.singupLink {
+  width: 30vw;
+  text-align: center;
+}
+
+.row {
+  margin-top: 3rem !important;
+
+}
+
+.row_content {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around
+}
+
+.contact_info_content {
+  margin-left: 1rem;
+}
+
+.navbar {
+  background-color: #333545;
+}
+
+.nav-link {
+  color: white !important;
+}
+
+.search_box {
+  margin-left: 40vw;
+}

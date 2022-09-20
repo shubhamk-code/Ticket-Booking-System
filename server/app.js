@@ -17,6 +17,9 @@ app.use(cookieParser());
 app.use(require('./router/auth'))
 //PORT in config.env
 const PORT = process.env.PORT;
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: false }));
+
 
 app.get('/contact', (req, res) => {
     res.cookie("test", "cookie")

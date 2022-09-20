@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../App'
 
 const Logout = () => {
-    const { state, dispatch } = useContext(UserContext);
+    const { dispatch } = useContext(UserContext);
     const navigate = useNavigate();
     useEffect(() => {
         fetch('/logout', {

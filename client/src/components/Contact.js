@@ -7,7 +7,7 @@ const Contact = () => {
                 <div className="col-lg-10 offset-lg-1 row_content">
                     {/* phone no */}
                     <div className="contact_info_item d-flex justify-content-start align-items-center shadow px-3 py-2">
-                        <img src="" alt="phone " />
+                        {/* <img src="" alt="phone " /> */}
                         <div className="contact_info_content">
                             <div className="contact_info_title">
                                 Phone
@@ -19,7 +19,7 @@ const Contact = () => {
                     </div>
                     {/* email */}
                     <div className="contact_info_item d-flex justify-content-start align-items-center shadow px-3 py-2">
-                        <img src="" alt="phone " />
+                        {/* <img src="" alt="phone " /> */}
                         <div className="contact_info_content">
                             <div className="contact_info_title">
                                 Email
@@ -31,7 +31,7 @@ const Contact = () => {
                     </div>
                     {/* address */}
                     <div className="contact_info_item d-flex justify-content-start align-items-center shadow px-3 py-2">
-                        <img src="" alt="phone " />
+                        {/* <img src="" alt="phone " /> */}
                         <div className="contact_info_content ">
                             <div className="contact_info_title">
                                 Address

@@ -7,6 +7,7 @@ import Login from './components/Login'
 import Contact from './components/Contact'
 import Signup from './components/Signup'
 import Logout from './components/Logout'
+import Reset from './components/Reset'
 import { initalState, reducer } from '../src/reducer/UseReducer'
 import "./App.css"
 
@@ -20,6 +21,7 @@ const Routing = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/logout" element={<Logout />} />
+      <Route path="/reset-password" element={<Reset />} />
     </Routes>
   )
 }

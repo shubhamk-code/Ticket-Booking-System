@@ -5,7 +5,7 @@ import { UserContext } from '../App'
 
 const Login = () => {
 
-    const { state, dispatch } = useContext(UserContext);
+    const { dispatch } = useContext(UserContext);
 
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
@@ -58,6 +58,7 @@ const Login = () => {
                                             onClick={loginUser}
                                         >signin</button>
                                     </form>
+                                    <NavLink to="/reset-password">Forgot password</NavLink>
                                 </div>
                             </div>
                             <div className="signinImg">

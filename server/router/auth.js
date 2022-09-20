@@ -4,9 +4,6 @@ const User = require('../model/userSchema')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticate = require('../middleware/authenticate');
-// const app = express()
-// app.set("view engine", "ejs");
-// app.use(express.urlencoded({ extended: false }));
 let bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 var nodemailer = require('nodemailer')
@@ -56,7 +53,6 @@ router.post('/signin', async (req, res) => {
         if (userLogin) {
             const isMatch = await bcrypt.compare(password, userLogin.password)
             const token = await userLogin.generateAuthToken();
-            console.log(token)
             res.cookie("jwtoken", token, {
                 expires: new Date(Date.now() + 25892000000),
                 httpOnly: true
@@ -92,7 +88,6 @@ router.get('/about', authenticate, (req, res) => {
 })
 
 router.get('/logout', (req, res) => {
-    console.log("logout")
     res.clearCookie('jwtoken', { path: '/' });
     res.status(200)
         .send("logout");
@@ -124,7 +119,6 @@ router.post("/forgot-password", async (req, res) => {
             subject: 'Reset password',
             text: link
         };
-
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
@@ -138,7 +132,6 @@ router.post("/forgot-password", async (req, res) => {
 })
 
 router.get("/reset-password/:id/:token", async (req, res) => {
-    console.log("checking")
     const { id, token } = req.params;
     const user = await User.findOne({ _id: id })
     if (!user) {
@@ -151,24 +144,15 @@ router.get("/reset-password/:id/:token", async (req, res) => {
     } catch (err) {
         res.send("Not verified")
     }
-    console.log(req.params);
-    // res.status(200).send("done")
-    // .json({ message: "done" });
 })
 
 router.post("/reset-password/:id/:token", urlencodedParser, async (req, res) => {
-    console.log("updating")
     const { id, token } = req.params;
-    // console.log(req.body);
-    // console.log(req.body.password);
-    // console.log(req.body.cpassword);
     const password = req.body.password;
     const cpassword = req.body.cpassword;
-    console.log(password, cpassword)
     if (password !== cpassword) {
         return res.json({ status: "Password do not match!" });
     }
-
     const user = await User.findOne({ _id: id })
     if (!user) {
         return res.json({ status: "User not found!" });
@@ -182,7 +166,6 @@ router.post("/reset-password/:id/:token", urlencodedParser, async (req, res) => 
             password: encPassword,
             cpassword: encCpassword
         });
-        // res.json("password changed successfully")
         res.render("index", { email: verify.email, status: "verified" })
     } catch (err) {
         res.send("Not verified")

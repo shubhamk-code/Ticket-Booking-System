@@ -5,7 +5,7 @@ import movieApp from "../images/movieApp.jpg"
 import { UserContext } from '../App'
 
 const Navbar = () => {
-    const { state, dispatch } = useContext(UserContext);
+    const { state } = useContext(UserContext);
     const RenderMenu = () => {
         if (state) {
             return (

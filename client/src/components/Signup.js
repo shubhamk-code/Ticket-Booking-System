@@ -32,7 +32,6 @@ const Signup = () => {
 
         // const data = await res.json();
         const exists = res.status;
-        console.log(res.status)
         if (exists === 422) {
             window.alert("Invalid Registration");
         } else if (exists === 400) {

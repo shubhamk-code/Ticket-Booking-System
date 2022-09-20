@@ -1,6 +1,0 @@
-(function(w, ns) {
-  w[ns] = {};
-  ['identify', 'start', 'show', 'on', 'page', 'anonymous', 'track', 'clearShow', 'off', 'once', 'reset', 'debug', 'initMixpanel', 'initKM'].forEach(function(m) {
-    w[ns][m] = function() { console && console.warn('Your Appcues account has expired, but you have not uninstalled Appcues. Please contact us at support@appcues.com.') }
-  })
-})(window, 'Appcues')

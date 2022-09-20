@@ -2,9 +2,14 @@ const express = require('express');
 const router = express.Router();
 const User = require('../model/userSchema')
 const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const authenticate = require('../middleware/authenticate');
-// const cookieParser = require('cookie-parser')
+// const app = express()
+// app.set("view engine", "ejs");
+// app.use(express.urlencoded({ extended: false }));
+let bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({ extended: true });
+var nodemailer = require('nodemailer')
 
 require('../db/connection')
 router.get('/', (req, res) => {
@@ -92,4 +97,96 @@ router.get('/logout', (req, res) => {
     res.status(200)
         .send("logout");
 })
+
+router.post("/forgot-password", async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.json({ status: "User not found!" });
+        }
+        const secret = process.env.SECRET + user.password;
+        const token = jwt.sign({ email: user.email, id: user._id }, secret, {
+            expiresIn: "5m"
+        })
+        const link = `http://localhost:5000/reset-password/${user._id}/${token}`;
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'grp43acts@gmail.com',
+                pass: 'xroxepntlakbaoyq'
+            }
+        });
+
+        var mailOptions = {
+            from: 'grp43acts@gmail.com',
+            to: user.email,
+            subject: 'Reset password',
+            text: link
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    } catch (err) {
+        console.error(err);
+    }
+})
+
+router.get("/reset-password/:id/:token", async (req, res) => {
+    console.log("checking")
+    const { id, token } = req.params;
+    const user = await User.findOne({ _id: id })
+    if (!user) {
+        return res.json({ status: "User not found!" });
+    }
+    const secret = process.env.SECRET + user.password;
+    try {
+        const verify = jwt.verify(token, secret);
+        res.render("index", { email: verify.email, status: "Not verified" })
+    } catch (err) {
+        res.send("Not verified")
+    }
+    console.log(req.params);
+    // res.status(200).send("done")
+    // .json({ message: "done" });
+})
+
+router.post("/reset-password/:id/:token", urlencodedParser, async (req, res) => {
+    console.log("updating")
+    const { id, token } = req.params;
+    // console.log(req.body);
+    // console.log(req.body.password);
+    // console.log(req.body.cpassword);
+    const password = req.body.password;
+    const cpassword = req.body.cpassword;
+    console.log(password, cpassword)
+    if (password !== cpassword) {
+        return res.json({ status: "Password do not match!" });
+    }
+
+    const user = await User.findOne({ _id: id })
+    if (!user) {
+        return res.json({ status: "User not found!" });
+    }
+    const secret = process.env.SECRET + user.password;
+    try {
+        const verify = jwt.verify(token, secret);
+        const encPassword = await bcrypt.hash(password, 12)
+        const encCpassword = await bcrypt.hash(cpassword, 12)
+        await User.findByIdAndUpdate(id, {
+            password: encPassword,
+            cpassword: encCpassword
+        });
+        // res.json("password changed successfully")
+        res.render("index", { email: verify.email, status: "verified" })
+    } catch (err) {
+        res.send("Not verified")
+    }
+})
+
 module.exports = router;

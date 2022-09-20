@@ -58,6 +58,7 @@ const Login = () => {
                                             onClick={loginUser}
                                         >signin</button>
                                     </form>
+                                    <NavLink to="/reset-password">Forgot password</NavLink>
                                 </div>
                             </div>
                             <div className="signinImg">

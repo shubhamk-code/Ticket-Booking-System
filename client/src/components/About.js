@@ -89,10 +89,11 @@ const About = () => {
                         />
                     </div>
                     <div className="input-group input-group-sm mb-3">
-                        <span className="input-group-text" id="inputGroup-sizing-sm">Work </span>
+                        <span className="input-group-text" id="inputGroup-sizing-sm">Role </span>
                         <input type="text" name="work" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
                             value={userData.work}
                             onChange={handleChange}
+                            disabled
                         />
                     </div>
                     {/* {`/product-details/${props.loopItem.id}`} */}

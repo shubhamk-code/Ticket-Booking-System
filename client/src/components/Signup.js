@@ -53,32 +53,26 @@ const Signup = () => {
                             <div className="signupForm">
                                 <form method="POST">
                                     <div className="form-group mt-3" >
-                                        {/* <label for="name">Enter Name</label> */}
                                         <input type="text" name="name" className="form-control" id="exampleInputName" placeholder="Enter name" value={user.name}
                                             onChange={e => handleInputs(e)} required />
                                     </div>
                                     <div className="form-group mt-2" >
-                                        {/* <label for="email">Enter Email</label> */}
                                         <input type="text" name="email" className="form-control" id="exampleInputEmail" placeholder="Enter email" value={user.email}
                                             required onChange={e => handleInputs(e)} />
                                     </div>
                                     <div className="form-group mt-2" >
-                                        {/* <label for="phone">Enter Phone no.</label> */}
                                         <input type="text" name="phone" className="form-control" id="exampleInputPhone" placeholder="Enter phone no." value={user.phone}
                                             onChange={e => handleInputs(e)} />
                                     </div>
-                                    <div className="form-group mt-2" >
-                                        {/* <label for="profession">Enter Profession</label> */}
+                                    {/* <div className="form-group mt-2" >
                                         <input type="text" name="work" className="form-control" id="exampleInputProfession" placeholder="Enter profession" value={user.work}
                                             onChange={e => handleInputs(e)} />
-                                    </div>
+                                    </div> */}
                                     <div className="form-group mt-2">
-                                        {/* <label for="exampleInputPassword1">Password</label> */}
                                         <input name="password" type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" value={user.password}
                                             onChange={e => handleInputs(e)} autoComplete="off" />
                                     </div>
                                     <div className="form-group mt-2">
-                                        {/* <label for="exampleInputPassword2">Confirm Password</label> */}
                                         <input name="cpassword" type="password" className="form-control" id="exampleInputPassword2" placeholder="Confirm Password" value={user.cpassword}
                                             onChange={e => handleInputs(e)} autoComplete="off" />
                                     </div>

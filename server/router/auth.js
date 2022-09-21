@@ -17,9 +17,9 @@ router.get('/', (req, res) => {
 //Registration part 
 router.post('/register', async (req, res) => {
 
-    const { name, email, phone, work, password, cpassword } = req.body;
+    const { name, email, phone, password, cpassword } = req.body;
     //check for fields validation
-    if (!name || !email || !phone || !work || !password || !cpassword) {
+    if (!name || !email || !phone || !password || !cpassword) {
         return res.status(422).json({ error: "please fill all required fields" });
     }
     //if user is unique
@@ -31,7 +31,7 @@ router.post('/register', async (req, res) => {
             return res.status(422).json({ error: "Password not matching" })
         } else {
             //if not exists
-            const user = new User({ name, email, phone, work, password, cpassword })
+            const user = new User({ name, email, phone, work: "User", password, cpassword })
             //calls hashing method before saving
             await user.save()
             res.status(201).json("user registered successfully")
@@ -59,7 +59,10 @@ router.post('/signin', async (req, res) => {
             });
             if (!isMatch) {
                 res.status(400).json({ error: "Invalid credentials" })
-            } else {
+            } else if (userLogin.work === "Admin") {
+                res.status(201).json({ message: "Admin Login" })
+            }
+            else {
                 res.json({ message: "Login successful" })
             }
         } else {

@@ -25,7 +25,11 @@ const Login = () => {
         const data = await res.json();
         if (res.status === 400 || !data) {
             window.alert("Invalid credentials")
-        } else {
+        } else if (res.status === 201) {
+            dispatch({ type: "ADMIN", payload: true })
+            navigate("/");
+        }
+        else {
             dispatch({ type: "USER", payload: true })
             navigate("/");
         }

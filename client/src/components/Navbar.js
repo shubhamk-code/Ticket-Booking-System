@@ -7,7 +7,28 @@ import { UserContext } from '../App'
 const Navbar = () => {
     const { state } = useContext(UserContext);
     const RenderMenu = () => {
-        if (state) {
+        if (state == 100) {
+            return (
+                <>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/">Home</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/about">About</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/addmovies">Add Movies</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/delmovies">Delete Movies</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/logout">Logout</NavLink>
+                    </li>
+                </>
+            )
+        }
+        else if (state) {
             return (
                 <>
                     <li className="nav-item">
@@ -24,15 +45,13 @@ const Navbar = () => {
                     </li>
                 </>
             )
-        } else {
+        }
+        else {
             return (
                 <>
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/">Home</NavLink>
                     </li>
-                    {/* <li className="nav-item">
-                        <NavLink className="nav-link" to="/about">About</NavLink>
-                    </li> */}
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/contact">Contact</NavLink>
                     </li>

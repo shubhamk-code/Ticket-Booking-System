@@ -10,6 +10,8 @@ import Logout from './components/Logout'
 import Reset from './components/Reset'
 import { initalState, reducer } from '../src/reducer/UseReducer'
 import "./App.css"
+import AddMovie from './components/AddMovie'
+import DelMovie from './components/DelMovie'
 
 export const UserContext = createContext();
 const Routing = () => {
@@ -22,6 +24,8 @@ const Routing = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/logout" element={<Logout />} />
       <Route path="/reset-password" element={<Reset />} />
+      <Route path="/addmovies" element={<AddMovie />} />
+      <Route path="/delmovies" element={<DelMovie />} />
     </Routes>
   )
 }

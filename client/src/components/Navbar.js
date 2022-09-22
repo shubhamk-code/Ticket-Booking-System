@@ -7,7 +7,7 @@ import { UserContext } from '../App'
 const Navbar = () => {
     const { state } = useContext(UserContext);
     const RenderMenu = () => {
-        if (state == 100) {
+        if (state === 100) {
             return (
                 <>
                     <li className="nav-item">

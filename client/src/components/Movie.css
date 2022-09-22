@@ -14,5 +14,6 @@
 .movie_cards {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    /* margin-right: 20px; */
+    /* justify-content: space-around; */
 }

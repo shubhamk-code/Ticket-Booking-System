@@ -9,8 +9,8 @@ const TextfieldWrapper = ({
     const handleChange = event => {
         console.log(event.target.value)
         console.log("chwcking")
-        const val = event.target.files[0].split('fakepath\\');
-        const { value } = event.target.files[0];
+        const val = event.target.files;
+        const { value } = event.currentTarget.files[0];
         console.log(value);
         window.alert(value);
         setFieldValue(name, value);
@@ -20,7 +20,7 @@ const TextfieldWrapper = ({
     const configTextField = {
         ...field,
         ...otherProps,
-        type: 'file',
+        // type: 'file',
         fullWidth: true,
         variant: 'outlined',
         onchange: handleChange
@@ -32,7 +32,7 @@ const TextfieldWrapper = ({
     }
 
     return (
-        <TextField {...configTextField} />
+        <TextField type={"file"} {...configTextField} />
     )
 }
 

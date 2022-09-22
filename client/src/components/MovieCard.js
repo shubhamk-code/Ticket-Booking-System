@@ -1,34 +1,63 @@
 import React from "react";
-import { NavLink, Routes, Route } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import MovieData from "./MovieData";
-import MovieDetails from "./MovieDetails";
+// import MovieDetails from "./MovieDetails";
+import Axios from "axios";
 
-function MovieCard() {
-
+function MovieCard(props) {
+    const button = props.data
+    var button_class = "btn btn-primary"
+    var url = "moviedetails"
+    if (props.data !== "Movie Details") {
+        button_class = "btn btn-danger"
+        url = "delmovie"
+    }
     const movies = MovieData();
+
     try {
         const allMovies = movies.data.map(function (data) {
             const id = data._id;
-            const name = data.movie_name;
-            const actors_name = data.actors.actor_name.join(", ");
+            const name = data.name;
+            const actors_name = data.actors;
             const director = data.director;
             var base64 = btoa(
-                new Uint8Array(data.poster_img.data.data)
+                new Uint8Array(data.image.data.data)
                     .reduce((data, byte) => data + String.fromCharCode(byte), '')
             );
-            return (
-                <>
-                    <div className="card mt-5">
-                        <img src={`data:image/png;base64,${base64}`} className="card-img-top card_image" alt="Not found" />
-                        <div className="card-body shadow">
-                            <p className="text-capitalize"><label className="me-2 fw-bold">Movie:</label>{name}</p>
-                            <p><label className="me-2 fw-bold">Actors:</label>{actors_name}</p>
-                            <p><label className="me-2 fw-bold">Director:</label>{director}</p>
-                            <NavLink to={`/moviedetails/${id}`} className="btn btn-primary">Movie Details</NavLink>
+            const handleChange = event => {
+                if (button !== "Movie Details") {
+                    Axios.delete(`/delmovie/${id}`)
+                }
+            }
+            if (props.data !== "Movie Details") {
+                return (
+                    <>
+                        <div className="card mt-5 me-5">
+                            <img src={`data:image/png;base64,${base64}`} className="card-img-top card_image" alt="Not found" />
+                            <div className="card-body shadow">
+                                <p className="text-capitalize"><label className="me-2 fw-bold">Movie:</label>{name}</p>
+                                <p><label className="me-2 fw-bold">Actors:</label>{actors_name}</p>
+                                <p><label className="me-2 fw-bold">Director:</label>{director}</p>
+                                <button className={button_class} onClick={handleChange}>{button}</button>
+                            </div>
                         </div>
-                    </div>
-                </>
-            );
+                    </>
+                );
+            } else {
+                return (
+                    <>
+                        <div className="card mt-5 me-5">
+                            <img src={`data:image/png;base64,${base64}`} className="card-img-top card_image" alt="Not found" />
+                            <div className="card-body shadow">
+                                <p className="text-capitalize"><label className="me-2 fw-bold">Movie:</label>{name}</p>
+                                <p><label className="me-2 fw-bold">Actors:</label>{actors_name}</p>
+                                <p><label className="me-2 fw-bold">Director:</label>{director}</p>
+                                <NavLink to={`/${url}/${id}`} className={button_class}>{button}</NavLink>
+                            </div>
+                        </div>
+                    </>
+                );
+            }
         })
         return [allMovies];
     }

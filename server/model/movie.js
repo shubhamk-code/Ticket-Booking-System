@@ -12,7 +12,7 @@ const movie = new mongoose.Schema({
     end_date: Date,
     first_show: String,
     second_show: String,
-    imgage: {
+    image: {
         data: Buffer,
         contentType: String,
     },

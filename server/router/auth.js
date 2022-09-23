@@ -1,12 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../model/userSchema')
+const Movie = require('../model/movie')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticate = require('../middleware/authenticate');
 let bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 var nodemailer = require('nodemailer')
+const multer = require("multer");
+
+const app = express();
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.set("view engine", "ejs");
+const fs = require('fs');
+var path = require('path');
+
+
 
 require('../db/connection')
 router.get('/', (req, res) => {
@@ -174,5 +185,72 @@ router.post("/reset-password/:id/:token", urlencodedParser, async (req, res) => 
         res.send("Not verified")
     }
 })
+
+//storage
+const Storage = multer.diskStorage({
+    destination: 'uploads',
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + file.originalname);
+    },
+});
+
+const upload = multer({
+    storage: Storage
+}).single('testImage')
+
+//movie register
+
+router.post("/movieregister", async (req, res) => {
+    upload(req, res, (error) => {
+        if (error) {
+            console.log(error)
+        } else {
+            try {
+                const { name, actors, director, certification, genre, length, release_date, start_date, end_date, first_show, second_show, image } = req.body;
+                const newMovie = new Movie({
+                    name, actors, director, certification, genre, length, release_date, start_date, end_date, first_show, second_show, image
+                    // : {
+                    //     data: fs.readFileSync("uploads/" + req.file.filename),
+                    //     contentType: 'image/png'
+                    // }
+                })
+                // console.log(image)
+                newMovie.save()
+                res.status(201).json("movie added successfully")
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    })
+})
+
+router.get("/movies", async (req, res) => {
+    try {
+        const movies = await Movie.find();
+        res.status(200).send({ data: movies })
+    } catch (error) {
+        res.status(500).send({ message: "Internal server error" })
+    }
+})
+
+router.get("/moviedetails/:id", async (req, res) => {
+    try {
+        const movies = await Movie.findById(req.params.id);
+        res.status(200).send({ data: movies })
+    } catch (error) {
+        res.status(500).send({ message: "Internal server error" })
+    }
+})
+
+router.delete("/delmovie/:id", async (req, res) => {
+    try {
+        const movies = await Movie.findOneAndDelete(req.params.id);
+        res.status(200).send({ data: "deleted", name: movies.name })
+    } catch (error) {
+        res.status(500).send({ message: "Internal server error" })
+    }
+})
+
+
 
 module.exports = router;

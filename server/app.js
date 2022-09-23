@@ -20,24 +20,6 @@ const PORT = process.env.PORT;
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 
-
-app.get('/contact', (req, res) => {
-    res.cookie("test", "cookie")
-    res.send("contact")
-})
-
-app.get('/signin', (req, res) => {
-    res.send("signin")
-})
-
-app.get('/signup', (req, res) => {
-    res.send("signup")
-})
-
-app.get('/signout', (req, res) => {
-    res.send("signout")
-})
-
 //listener
 app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)

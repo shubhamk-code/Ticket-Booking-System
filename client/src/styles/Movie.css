@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: center;
     /* background-color: red; */
-    color: red;
+    color: red !important;
 }
 
 .card {

@@ -24,16 +24,25 @@ const Login = () => {
         });
         const data = await res.json();
         if (res.status === 400 || !data) {
-            window.alert("Invalid credentials")
+            try {
+                console.log("Invalid credentials")
+            } catch (error) {
+                console.error(error);
+            }
+            // window.alert("Invalid credentials")
+            console.log("Invalid credentials")
         } else if (res.status === 201) {
+            console.log("Admin login successful")
             dispatch({ type: "ADMIN", payload: true })
             navigate("/");
         }
         else {
+            console.log("User login successful")
             dispatch({ type: "USER", payload: true })
             navigate("/");
         }
     }
+
     return (
         <>
             <div className="main">

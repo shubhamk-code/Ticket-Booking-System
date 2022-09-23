@@ -12,10 +12,7 @@ const movie = new mongoose.Schema({
     end_date: Date,
     first_show: String,
     second_show: String,
-    image: {
-        data: Buffer,
-        contentType: String,
-    },
+    image: String,
 });
 
 module.exports = mongoose.model("movie", movie);

@@ -208,10 +208,11 @@ router.post("/movieregister", async (req, res) => {
             try {
                 const { name, actors, director, certification, genre, length, release_date, start_date, end_date, first_show, second_show, image } = req.body;
                 const newMovie = new Movie({
-                    name, actors, director, certification, genre, length, release_date, start_date, end_date, first_show, second_show, image: {
-                        data: fs.readFileSync("uploads/" + req.file.filename),
-                        contentType: 'image/png'
-                    }
+                    name, actors, director, certification, genre, length, release_date, start_date, end_date, first_show, second_show, image
+                    // : {
+                    //     data: fs.readFileSync("uploads/" + req.file.filename),
+                    //     contentType: 'image/png'
+                    // }
                 })
                 // console.log(image)
                 newMovie.save()

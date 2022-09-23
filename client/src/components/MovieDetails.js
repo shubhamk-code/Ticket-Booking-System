@@ -20,16 +20,17 @@ const MovieDetails = () => {
         const end_date = movieDetails.end_date.split("T")[0];
         const first_show = movieDetails.first_show;
         const second_show = movieDetails.second_show;
-        var base64 = btoa(
-            new Uint8Array(movieDetails.image.data.data)
-                .reduce((data, byte) => data + String.fromCharCode(byte), '')
-        );
+        const image = movieDetails.image;
+        // var base64 = btoa(
+        //     new Uint8Array(movieDetails.image.data.data)
+        //         .reduce((data, byte) => data + String.fromCharCode(byte), '')
+        // );
         return (
             <>
                 <div className="jumbotron mt-5 p-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}>
                     <div className="conatiner mt-2 p-5" style={{ width: "45vw" }}>
                         <div className="card mb-3 p-2">
-                            <img src={`data:image/png;base64,${base64}`} className="card-img-top p-2" alt="..." style={{ height: "200px", width: "250px" }} />
+                            <img src={image} className="card-img-top p-2" alt="..." style={{ height: "200px", width: "250px" }} />
                             <div className="card-body">
                                 <h5 className="card-title" style={{ "text-transform": "capitalize" }}><label className="me-2 fw-bold">Title:</label>{name}</h5>
                                 <p className="card-text"><label className="me-2 fw-bold">Actors:</label>{actors_name}</p>

@@ -20,8 +20,10 @@ function MovieCard(props) {
             const name = data.name;
             const actors_name = data.actors;
             const director = data.director;
+            const image = data.image;
+            // console.log(image);
             var base64 = btoa(
-                new Uint8Array(data.image.data.data)
+                new Uint8Array(data.image.data)
                     .reduce((data, byte) => data + String.fromCharCode(byte), '')
             );
             const handleChange = event => {
@@ -33,7 +35,10 @@ function MovieCard(props) {
                 return (
                     <>
                         <div className="card mt-5 me-5">
-                            <img src={`data:image/png;base64,${base64}`} className="card-img-top card_image" alt="Not found" />
+                            {/* <img src={image} className="card-img-top card_image" alt="Not found" /> */}
+                            {/* <img src={`data:image/jpeg;base64,${base64}`} className="card-img-top card_image" alt="Not found" /> */}
+                            {/* <img width='500' height='200' src={`data:image/png;base64,${image}`} alt="Not found" /> */}
+                            {/* <img width='500' height='200' src={URL.createObjectURL(`data:image/png;base64,${image}`)} alt="Not found" /> */}
                             <div className="card-body shadow">
                                 <p className="text-capitalize"><label className="me-2 fw-bold">Movie:</label>{name}</p>
                                 <p><label className="me-2 fw-bold">Actors:</label>{actors_name}</p>
@@ -47,7 +52,8 @@ function MovieCard(props) {
                 return (
                     <>
                         <div className="card mt-5 me-5">
-                            <img src={`data:image/png;base64,${base64}`} className="card-img-top card_image" alt="Not found" />
+                            {/* <img src={`data:image/png;base64,${base64}`} className="card-img-top card_image" alt="Not found" /> */}
+                            <img src={image} className="card-img-top card_image" alt="Not found" />
                             <div className="card-body shadow">
                                 <p className="text-capitalize"><label className="me-2 fw-bold">Movie:</label>{name}</p>
                                 <p><label className="me-2 fw-bold">Actors:</label>{actors_name}</p>

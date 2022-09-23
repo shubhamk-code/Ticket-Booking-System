@@ -9,6 +9,7 @@ const authenticate = async (req, res, next) => {
         req.token = token;
         req.rootUser = rootUser;
         req.userId = rootUser._id;
+        console.log("checking")
         next();
     } catch (error) {
         res.status(401).send(error);

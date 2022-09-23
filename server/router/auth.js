@@ -68,6 +68,10 @@ router.post('/signin', async (req, res) => {
                 expires: new Date(Date.now() + 25892000000),
                 httpOnly: true
             });
+            res.cookie("userId", userLogin.email, {
+                expires: new Date(Date.now() + 900000),
+                httpOnly: true
+            });
             if (!isMatch) {
                 res.status(400).json({ error: "Invalid credentials" })
             } else if (userLogin.work === "Admin") {
@@ -100,6 +104,8 @@ router.put('/update/:id', async (req, res) => {
 router.get('/about', authenticate, (req, res) => {
     res.send(req.rootUser);
 })
+
+
 
 router.get('/logout', (req, res) => {
     res.clearCookie('jwtoken', { path: '/' });
@@ -209,12 +215,7 @@ router.post("/movieregister", async (req, res) => {
                 const { name, actors, director, certification, genre, length, release_date, start_date, end_date, first_show, second_show, image } = req.body;
                 const newMovie = new Movie({
                     name, actors, director, certification, genre, length, release_date, start_date, end_date, first_show, second_show, image
-                    // : {
-                    //     data: fs.readFileSync("uploads/" + req.file.filename),
-                    //     contentType: 'image/png'
-                    // }
                 })
-                // console.log(image)
                 newMovie.save()
                 res.status(201).json("movie added successfully")
             } catch (error) {
@@ -251,6 +252,11 @@ router.delete("/delmovie/:id", async (req, res) => {
     }
 })
 
+//bookticket
+
+router.get('/bookticket/:id', authenticate, (req, res) => {
+    res.send(req.rootUser);
+})
 
 
 module.exports = router;

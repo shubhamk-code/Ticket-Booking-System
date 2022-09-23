@@ -13,6 +13,7 @@ import "./App.css"
 import AddMovie from './components/AddMovie'
 import DelMovie from './components/DelMovie'
 import MovieDetails from './components/MovieDetails'
+import Ticket from './components/Ticket'
 
 export const UserContext = createContext();
 const Routing = () => {
@@ -28,6 +29,7 @@ const Routing = () => {
       <Route path="/addmovies" element={<AddMovie />} />
       <Route path="/delmovies" element={<DelMovie />} />
       <Route path="/moviedetails/:id" element={<MovieDetails />} />
+      <Route path="/bookticket/:id" element={<Ticket />} />
     </Routes>
   )
 }

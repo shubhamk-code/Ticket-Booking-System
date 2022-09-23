@@ -1,16 +1,15 @@
 import React from "react";
-import { useParams } from 'react-router-dom'
+import { useParams, NavLink } from 'react-router-dom'
 import MovieDetailsIndividual from "./MovieDetailsIndividual";
 
 
 const MovieDetails = () => {
     const params = useParams();
     const movieDetails = MovieDetailsIndividual(params);
-    console.log(movieDetails)
     try {
         const name = movieDetails.name;
-        console.log(name)
         const actors_name = movieDetails.actors;
+        const id = movieDetails._id;
         const certification = movieDetails.certification;
         const director = movieDetails.director;
         const genre = movieDetails.genre;
@@ -32,7 +31,7 @@ const MovieDetails = () => {
                         <div className="card mb-3 p-2">
                             <img src={image} className="card-img-top p-2" alt="..." style={{ height: "200px", width: "250px" }} />
                             <div className="card-body">
-                                <h5 className="card-title" style={{ "text-transform": "capitalize" }}><label className="me-2 fw-bold">Title:</label>{name}</h5>
+                                <h5 className="card-title text-capitalize"><label className="me-2 fw-bold">Title:</label>{name}</h5>
                                 <p className="card-text"><label className="me-2 fw-bold">Actors:</label>{actors_name}</p>
                                 <p className="card-text"><label className="me-2 fw-bold">Director:</label>{director}</p>
                                 <p className="card-text"><label className="me-2 fw-bold">Genre:</label>{genre}</p>
@@ -43,8 +42,9 @@ const MovieDetails = () => {
                                 <p className="card-text"><label className="me-2 fw-bold">Movie End Date:</label>{end_date}</p>
                                 <p className="card-text"><label className="me-2 fw-bold">First show:</label>{first_show}</p>
                                 <p className="card-text"><label className="me-2 fw-bold">Second show:</label>{second_show}</p>
-                                <p className="card-text"><small class="text-muted">Released on: {release_date}</small></p>
-                                <button className="btn btn-primary">Book Tickets</button>
+                                <p className="card-text"><small className="text-muted">Released on: {release_date}</small></p>
+                                {/* <button className="btn btn-primary">Book Tickets</button> */}
+                                <NavLink to={`/bookticket/${id}`} className="btn btn-primary">Book Ticket</NavLink>
                             </div>
                         </div>
                     </div>

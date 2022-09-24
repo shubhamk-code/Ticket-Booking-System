@@ -13,7 +13,7 @@ function MovieCard(props) {
         url = "delmovie"
     }
     const movies = MovieData();
-
+    console.log(movies)
     try {
         const allMovies = movies.data.map(function (data) {
             const id = data._id;
@@ -35,7 +35,7 @@ function MovieCard(props) {
                 return (
                     <>
                         <div className="card mt-5 me-5">
-                            {/* <img src={image} className="card-img-top card_image" alt="Not found" /> */}
+                            <img src={image} className="card-img-top card_image" alt="Not found" />
                             {/* <img src={`data:image/jpeg;base64,${base64}`} className="card-img-top card_image" alt="Not found" /> */}
                             {/* <img width='500' height='200' src={`data:image/png;base64,${image}`} alt="Not found" /> */}
                             {/* <img width='500' height='200' src={URL.createObjectURL(`data:image/png;base64,${image}`)} alt="Not found" /> */}

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../model/userSchema')
 const Movie = require('../model/movie')
+const Show = require('../model/show')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticate = require('../middleware/authenticate');
@@ -68,8 +69,8 @@ router.post('/signin', async (req, res) => {
                 expires: new Date(Date.now() + 25892000000),
                 httpOnly: true
             });
-            res.cookie("userId", userLogin.email, {
-                expires: new Date(Date.now() + 900000),
+            res.cookie("work", userLogin.work, {
+                expires: new Date(Date.now() + 900000000),
                 httpOnly: true
             });
             if (!isMatch) {
@@ -258,5 +259,12 @@ router.get('/bookticket/:id', authenticate, (req, res) => {
     res.send(req.rootUser);
 })
 
+//Shows
+router.post('/addshows', async (req, res) => {
+    const { movieId, show, time, platinumRows, platinumRate, goldRows, goldRate, silverRows, silverRate } = req.body;
+    const newShow = new Show({ movieId, show, time, platinumRows, platinumRate, goldRows, goldRate, silverRows, silverRate })
+    await newShow.save();
+    res.status(201).json("show added successfully")
+})
 
 module.exports = router;

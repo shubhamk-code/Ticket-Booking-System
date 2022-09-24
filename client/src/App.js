@@ -11,6 +11,7 @@ import Reset from './components/Reset'
 import { initalState, reducer } from '../src/reducer/UseReducer'
 import "./App.css"
 import AddMovie from './components/AddMovie'
+import AddShows from './components/AddShows'
 import DelMovie from './components/DelMovie'
 import MovieDetails from './components/MovieDetails'
 import Ticket from './components/Ticket'
@@ -27,6 +28,7 @@ const Routing = () => {
       <Route path="/logout" element={<Logout />} />
       <Route path="/reset-password" element={<Reset />} />
       <Route path="/addmovies" element={<AddMovie />} />
+      <Route path="/addshows/:id" element={<AddShows />} />
       <Route path="/delmovies" element={<DelMovie />} />
       <Route path="/moviedetails/:id" element={<MovieDetails />} />
       <Route path="/bookticket/:id" element={<Ticket />} />

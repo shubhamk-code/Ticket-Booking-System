@@ -33,6 +33,8 @@ const Ticket = () => {
 
         getUserDetails();
     }, []);
+    console.log(movie)
+    console.log(user)
     return (
         <div>
             <h3>Ticket</h3>

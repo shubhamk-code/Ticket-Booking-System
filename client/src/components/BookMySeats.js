@@ -1,55 +1,57 @@
 import React, { useState } from 'react';
-// import classes from './BookMySeats.css';
 import Seats from './Seats';
 
-const createSeats = (rows, startIndex) => {
-    let i = 0;
-    let j = startIndex;
-    let k = 'A';
+
+const createMovieSeats = (rows, length, tclass) => {
+    tclass = tclass.toLowerCase();
+    let start = 'A'
     const section = [];
-    while (i < 6 && j <= rows) {
-        if (k > 'F') {
-            k = 'A';
-            j++;
-        }
-        if (j < rows + 1) {
-            section.push(k + j);
-            k = String.fromCharCode(k.charCodeAt(0) + 1);
-        }
-    }
-    return section;
-}
-
-
-const BookMySeats = () => {
-    const premiumSeats = createSeats(2, '1');
-    const normalSeats = createSeats(3, '2');
-    const [availableSeats, setAvailableSeats] = useState(['1A', '1B', '2A', '2B', '10A', '10B']);
-    console.log(availableSeats)
-    const [bookedSeats, setBookedSeats] = useState([]);
-    console.log(bookedSeats)
-    const [bookedStatus, setBookedStatus] = useState('');
-    const addSeat = (ev) => {
-        if (numberOfSeats && !ev.target.className.includes('disabled')) {
-            const seatsToBook = parseInt(numberOfSeats, 10);
-            if (bookedSeats.length <= seatsToBook) {
-                if (bookedSeats.includes(ev.target.innerText)) {
-                    const newAvailable = bookedSeats.filter(seat => seat !== ev.target.innerText);
-                    setBookedSeats(newAvailable);
-                } else if (bookedSeats.length < numberOfSeats) {
-                    setBookedSeats([...bookedSeats, ev.target.innerText]);
-
-                } else if (bookedSeats.length === seatsToBook) {
-                    bookedSeats.shift();
-                    setBookedSeats([...bookedSeats, ev.target.innerText]);
-                }
+    for (let i = 1; i <= rows; i++) {
+        for (let j = 1; j <= length; j++) {
+            if (tclass === "silver") {
+                section.push("S-" + start + j)
+            }
+            if (tclass === "gold") {
+                section.push("G-" + start + j)
+            }
+            if (tclass === "platinum") {
+                section.push("P-" + start + j)
             }
         }
-    };
+        start = String.fromCharCode(start.charCodeAt(0) + 1);
+    }
+    return section
+}
 
-    const confirmBooking = () => {
+const BookMySeats = () => {
+    const platinumSeats = createMovieSeats(1, 10, "platinum")
+    const silverSeats = createMovieSeats(4, 10, "silver")
+    const goldSeats = createMovieSeats(3, 10, "gold")
+    const [availableSeats, setAvailableSeats] = useState([]);
+    const [unAvailableSeats, setUnAvailableSeats] = useState(["P-A5"]);
+    const [bookedSeats, setBookedSeats] = useState([]);
+    const [bookedStatus, setBookedStatus] = useState('');
+
+    const addSeat = (event) => {
+        if (numberOfSeats && !event.target.className.includes('disabled')) {
+            const seatsToBook = parseInt(numberOfSeats, 10);
+            if (bookedSeats.includes(event.target.innerText)) {
+                const newAvailable = bookedSeats.filter(seat => seat !== event.target.innerText);
+                setBookedSeats(newAvailable);
+            } else if (bookedSeats.length < numberOfSeats) {
+                setBookedSeats([...bookedSeats, event.target.innerText]);
+            } else if (bookedSeats.length === seatsToBook) {
+                bookedSeats.shift();
+                setBookedSeats([...bookedSeats, event.target.innerText]);
+            }
+        }
+    }
+
+    const confirm_booking = () => {
         setBookedStatus('You have successfully booked the following seats:');
+        setUnAvailableSeats([...unAvailableSeats, ...bookedSeats])
         bookedSeats.forEach(seat => {
+            console.log(unAvailableSeats)
             setBookedStatus(prevState => {
                 return prevState + seat + ' ';
             })
@@ -58,27 +60,44 @@ const BookMySeats = () => {
         setAvailableSeats(newAvailableSeats);
         setBookedSeats([]);
         setNumberOfSeats(0);
-    };
-    const [numberOfSeats, setNumberOfSeats] = useState(0);
+    }
 
+    const [numberOfSeats, setNumberOfSeats] = useState(0);
     return (
         <React.Fragment>
             <p>How many seats would you like to book?</p>
-            <input value={numberOfSeats} onChange={(ev) => setNumberOfSeats(ev.target.value)} />
-            <Seats values={premiumSeats}
-                availableSeats={availableSeats}
-                bookedSeats={bookedSeats}
-                addSeat={addSeat} />
-            <Seats values={normalSeats}
-                availableSeats={availableSeats}
-                bookedSeats={bookedSeats}
-                addSeat={addSeat} />
-
-            <button onClick={confirmBooking}>Book seats</button>
+            <input value={numberOfSeats} onChange={(event) => setNumberOfSeats(event.target.value)} />
+            <div className="d-flex justify-content-center">
+                <div className="card p-2" style={{ width: "80vw" }}>
+                    <div className="card d-flex justify-content-center align-items-center" style={{ width: "68vw" }}>
+                        <h4>Platinum</h4>
+                        <Seats values={platinumSeats}
+                            availableSeats={availableSeats}
+                            unAvailableSeats={unAvailableSeats}
+                            bookedSeats={bookedSeats}
+                            addSeat={addSeat} />
+                    </div>
+                    <div className="card d-flex justify-content-center align-items-center" style={{ width: "68vw" }}>
+                        <h4>Gold</h4>
+                        <Seats values={goldSeats}
+                            availableSeats={availableSeats}
+                            unAvailableSeats={unAvailableSeats}
+                            bookedSeats={bookedSeats}
+                            addSeat={addSeat} />
+                    </div>
+                    <div className="card d-flex justify-content-center align-items-center" style={{ width: "68vw" }}>
+                        <h4>Silver</h4>
+                        <Seats values={silverSeats}
+                            availableSeats={availableSeats}
+                            unAvailableSeats={unAvailableSeats}
+                            bookedSeats={bookedSeats}
+                            addSeat={addSeat} />
+                    </div>
+                </div>
+            </div>
+            <button onClick={confirm_booking}>Book seats</button>
             <p>{bookedStatus}</p>
         </React.Fragment>
-
     );
-}
-
+};
 export default BookMySeats;

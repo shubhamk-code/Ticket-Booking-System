@@ -36,8 +36,8 @@ const BookMySeats = () => {
       })
       .catch((err) => console.log(err))
   }, [])
-  console.log(showData)
-  console.log(showData.data.map(data => console.log(data)))
+  console.log(showData.data)
+  console.log(showData.data.map(data => console.log(data.movie_shows.map(data => console.log(data.show.split('T')[0])))))
 
   const platinumSeats = createMovieSeats(1, 10, 'platinum')
   const silverSeats = createMovieSeats(4, 10, 'silver')

@@ -32,7 +32,7 @@ const Ticket = () => {
         // }).catch(err => console.log(err));
         getUserDetails();
     }, []);
-    console.log(movie)
+    // console.log(movie)
     console.log(user)
     return (
         <div>

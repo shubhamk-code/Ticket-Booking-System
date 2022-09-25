@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
-
+const Schema = mongoose.Schema;
+const ObjectId = mongoose.Types.ObjectId;
 const show = new mongoose.Schema({
-    movieId: String,
+    movieId: ObjectId,
     show: Date,
     time: String,
     platinumRows: { type: Array, "default": [] },

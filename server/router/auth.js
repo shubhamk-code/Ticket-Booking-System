@@ -10,6 +10,7 @@ let bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 var nodemailer = require('nodemailer')
 const multer = require("multer");
+const mongoose = require('mongoose')
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -265,6 +266,67 @@ router.post('/addshows', async (req, res) => {
     const newShow = new Show({ movieId, show, time, platinumRows, platinumRate, goldRows, goldRate, silverRows, silverRate })
     await newShow.save();
     res.status(201).json("show added successfully")
+})
+
+router.get('/showdetails/:id', async (req, res) => {
+    // Movie.aggregate(pipeline[
+    //     {
+    //         $lookup: {
+    //             from: 'Show',
+    //             as: "showDetails",
+    //             let: { searchId: "$id" },
+    //             pipeline: [
+    //                 {
+    //                     $match: {
+    //                         $expr: {
+    //                             $eq: ['$searchId', '$movieId']
+    //                         }
+    //                     }
+    //                 }
+    //             ]
+    //         }
+    //     },
+    //     {
+    //         $project: {
+    //             _id: 1,
+    //             name: 1,
+    //             platinumRows: 1,
+    //             platinumRate: 1,
+    //             goldRows: 1,
+    //             goldRate: 1,
+    //             silverRows: 1,
+    //             silverRate: 1,
+    //             bookedSeats: 1
+    //         }
+    //     }
+    // ]).exec(callback(err, result)=> {
+
+    // })
+    // const { ObjectId } = require('mongodb');
+    let id = req.params.id
+
+    // const _id = ObjectId(id)
+    // // console.log(_id)
+    // console.log(ObjectId(id))
+    Movie.aggregate([
+        { "$addFields": { "searchId": { "$toObjectId": id }}},
+        {
+        $lookup: {
+            from: "shows",
+            localField: "searchId",
+            foreignField: "movieId",
+            as: "movie_shows"
+        }
+    }]).exec((err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        if (result) {
+            res.send({
+                data: result
+            })
+        }
+    })
 })
 
 module.exports = router;

@@ -26,11 +26,10 @@ const Ticket = () => {
             }
         }
         //movie details
-        const url = `/moviedetails/${param.id}`;
-        Axios.get(url).then((res) => {
-            setMovie(res.data.data);
-        }).catch(err => console.log(err));
-
+        // const url = `/moviedetails/${param.id}`;
+        // Axios.get(url).then((res) => {
+        //     setMovie(res.data.data);
+        // }).catch(err => console.log(err));
         getUserDetails();
     }, []);
     console.log(movie)

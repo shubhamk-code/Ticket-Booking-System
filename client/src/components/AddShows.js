@@ -16,6 +16,7 @@ const AddShows = () => {
         value = e.target.value;
         setData({ ...data, [name]: value });
     }
+    console.log(data)
     if (data.show.length !== 0 && data.platinumRows.length !== 0 && data.goldRows.length !== 0 && data.silverRows.length !== 0 && data.silverRate.length !== 0 && data.goldRate.length !== 0 && data.platinumRate !== 0) {
         status = false;
     }
@@ -37,6 +38,7 @@ const AddShows = () => {
         const result = await res.json();
         console.log(result);
         reset();
+        status = true
     }
 
 
@@ -44,6 +46,8 @@ const AddShows = () => {
 
     const reset = (e) => {
         let inputs = document.querySelectorAll('input')
+        setData({ ...data, movieId: movieId.id, show: "", time: "", platinumRows: "", platinumRate: "", goldRows: "", goldRate: "", silverRows: "", silverRate: "", });
+        status = true;
         inputs.forEach(input => input.value = '');
     }
 

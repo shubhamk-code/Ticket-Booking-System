@@ -269,64 +269,40 @@ router.post('/addshows', async (req, res) => {
 })
 
 router.get('/showdetails/:id', async (req, res) => {
-    // Movie.aggregate(pipeline[
-    //     {
-    //         $lookup: {
-    //             from: 'Show',
-    //             as: "showDetails",
-    //             let: { searchId: "$id" },
-    //             pipeline: [
-    //                 {
-    //                     $match: {
-    //                         $expr: {
-    //                             $eq: ['$searchId', '$movieId']
-    //                         }
-    //                     }
-    //                 }
-    //             ]
-    //         }
-    //     },
-    //     {
-    //         $project: {
-    //             _id: 1,
-    //             name: 1,
-    //             platinumRows: 1,
-    //             platinumRate: 1,
-    //             goldRows: 1,
-    //             goldRate: 1,
-    //             silverRows: 1,
-    //             silverRate: 1,
-    //             bookedSeats: 1
-    //         }
-    //     }
-    // ]).exec(callback(err, result)=> {
-
-    // })
-    // const { ObjectId } = require('mongodb');
     let id = req.params.id
-
-    // const _id = ObjectId(id)
-    // // console.log(_id)
-    // console.log(ObjectId(id))
     Movie.aggregate([
-        { "$addFields": { "searchId": { "$toObjectId": id }}},
+        { "$addFields": { "searchId": { "$toObjectId": id } } },
         {
-        $lookup: {
-            from: "shows",
-            localField: "searchId",
-            foreignField: "movieId",
-            as: "movie_shows"
-        }
-    }]).exec((err, result) => {
-        if (err) {
-            res.send(err);
-        }
-        if (result) {
-            res.send({
-                data: result
-            })
-        }
-    })
+            $lookup: {
+                from: "shows",
+                localField: "searchId",
+                foreignField: "movieId",
+                as: "movie_shows"
+            }
+        }]).exec((err, result) => {
+            if (err) {
+                res.send(err);
+            }
+            if (result) {
+                res.send({
+                    data: result
+                })
+            }
+        })
+})
+
+router.post('/bookseats/:id', async (req, res) => {
+    let id = req.params.id;
+    let bookedSeats = req.body.bookedSeats;
+    console.log(bookedSeats);
+    try {
+        await Show.findByIdAndUpdate(id, {
+            bookedSeats: bookedSeats
+        });
+    } catch (error) {
+        console.log(error)
+    }
+    res.json({ status: "seat booked" })
 })
 
 module.exports = router;

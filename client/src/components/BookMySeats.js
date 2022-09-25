@@ -2,50 +2,50 @@ import React, { useState, useEffect } from 'react'
 import Seats from './Seats'
 import { useParams } from 'react-router-dom'
 import Axios from 'axios'
-
-const createMovieSeats = (rows, length, tclass) => {
-  tclass = tclass.toLowerCase()
-  let start = 'A'
-  const section = []
-  for (let i = 1; i <= rows; i++) {
-    for (let j = 1; j <= length; j++) {
-      if (tclass === 'silver') {
-        section.push('S-' + start + j)
-      }
-      if (tclass === 'gold') {
-        section.push('G-' + start + j)
-      }
-      if (tclass === 'platinum') {
-        section.push('P-' + start + j)
-      }
-    }
-    start = String.fromCharCode(start.charCodeAt(0) + 1)
-  }
-  return section
-}
+import axios from 'axios'
 
 const BookMySeats = () => {
   const movieId = useParams()
+  const [getData, setGetData] = useState([])
   const [showData, setShowData] = useState([])
+  const [numberOfSeats, setNumberOfSeats] = useState(0)
+  const [ticketDate, setTicketDate] = useState(new Date().toISOString().slice(0, 10))
+  const [platinumSeats, setPlatinumSeats] = useState([])
+  const [silverSeats, setSilverSeats] = useState([])
+  const [goldSeats, setGoldSeats] = useState([])
+  const [unAvailableSeats, setUnAvailableSeats] = useState([])
+  const [availableSeats, setAvailableSeats] = useState([])
+  const [bookedSeats, setBookedSeats] = useState([])
+  const [bookedStatus, setBookedStatus] = useState('')
 
   useEffect(() => {
     const url = `/showdetails/${movieId.id}`
     Axios.get(url)
       .then((res) => {
-        setShowData(res.data)
+        setGetData(res.data.data)
       })
       .catch((err) => console.log(err))
   }, [])
-  console.log(showData.data)
-  console.log(showData.data.map(data => console.log(data.movie_shows.map(data => console.log(data.show.split('T')[0])))))
+  const movie_shows = getData.map(data => {
+    return data.movie_shows
+  })
 
-  const platinumSeats = createMovieSeats(1, 10, 'platinum')
-  const silverSeats = createMovieSeats(4, 10, 'silver')
-  const goldSeats = createMovieSeats(3, 10, 'gold')
-  const [availableSeats, setAvailableSeats] = useState([])
-  const [unAvailableSeats, setUnAvailableSeats] = useState(['P-A5'])
-  const [bookedSeats, setBookedSeats] = useState([])
-  const [bookedStatus, setBookedStatus] = useState('')
+  const getShowDetails = () => {
+    if (movie_shows !== null) {
+      movie_shows.map(shows => {
+        shows.map(show => {
+          if (show.show.split('T')[0] == ticketDate) {
+            setShowData(show)
+            setPlatinumSeats(show.platinumRows)
+            setSilverSeats(show.silverRows)
+            setGoldSeats(show.goldRows)
+            setUnAvailableSeats(show.bookedSeats)
+          }
+        });
+      })
+    }
+  }
+  console.log(showData)
 
   const addSeat = (event) => {
     if (numberOfSeats && !event.target.className.includes('disabled')) {
@@ -65,6 +65,18 @@ const BookMySeats = () => {
   }
 
   const confirm_booking = () => {
+
+    try {
+      if (bookedSeats.length > 0) {
+        axios.post(`/bookseats/${showData._id}`, {
+          bookedSeats: bookedSeats
+        }).then((response) => {
+          console.log(response);
+        }, (err) => console.log(err))
+      }
+    } catch (error) {
+      console.log(error);
+    }
     setBookedStatus('You have successfully booked the following seats:')
     setUnAvailableSeats([...unAvailableSeats, ...bookedSeats])
     bookedSeats.forEach((seat) => {
@@ -81,14 +93,22 @@ const BookMySeats = () => {
     setNumberOfSeats(0)
   }
 
-  const [numberOfSeats, setNumberOfSeats] = useState(0)
   return (
     <React.Fragment>
-      <p>How many seats would you like to book?</p>
-      <input
-        value={numberOfSeats}
-        onChange={(event) => setNumberOfSeats(event.target.value)}
-      />
+      <div className="row">
+        <p>How many seats would you like to book?</p>
+        <input
+          value={numberOfSeats}
+          onChange={(event) => setNumberOfSeats(event.target.value)}
+        />
+        <p>Select Date?</p>
+        <input
+          type="date"
+          value={ticketDate}
+          onChange={(event) => setTicketDate(event.target.value)}
+          onClick={getShowDetails}
+        />
+      </div>
       <div className="d-flex justify-content-center">
         <div className="card p-2" style={{ width: '80vw' }}>
           <div

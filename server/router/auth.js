@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../model/userSchema')
 const Movie = require('../model/movie')
+const Show = require('../model/show')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticate = require('../middleware/authenticate');
@@ -9,6 +10,7 @@ let bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 var nodemailer = require('nodemailer')
 const multer = require("multer");
+const mongoose = require('mongoose')
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -68,8 +70,8 @@ router.post('/signin', async (req, res) => {
                 expires: new Date(Date.now() + 25892000000),
                 httpOnly: true
             });
-            res.cookie("userId", userLogin.email, {
-                expires: new Date(Date.now() + 900000),
+            res.cookie("work", userLogin.work, {
+                expires: new Date(Date.now() + 900000000),
                 httpOnly: true
             });
             if (!isMatch) {
@@ -258,5 +260,49 @@ router.get('/bookticket/:id', authenticate, (req, res) => {
     res.send(req.rootUser);
 })
 
+//Shows
+router.post('/addshows', async (req, res) => {
+    const { movieId, show, time, platinumRows, platinumRate, goldRows, goldRate, silverRows, silverRate } = req.body;
+    const newShow = new Show({ movieId, show, time, platinumRows, platinumRate, goldRows, goldRate, silverRows, silverRate })
+    await newShow.save();
+    res.status(201).json("show added successfully")
+})
+
+router.get('/showdetails/:id', async (req, res) => {
+    let id = req.params.id
+    Movie.aggregate([
+        { "$addFields": { "searchId": { "$toObjectId": id } } },
+        {
+            $lookup: {
+                from: "shows",
+                localField: "searchId",
+                foreignField: "movieId",
+                as: "movie_shows"
+            }
+        }]).exec((err, result) => {
+            if (err) {
+                res.send(err);
+            }
+            if (result) {
+                res.send({
+                    data: result
+                })
+            }
+        })
+})
+
+router.post('/bookseats/:id', async (req, res) => {
+    let id = req.params.id;
+    let bookedSeats = req.body.bookedSeats;
+    console.log(bookedSeats);
+    try {
+        await Show.findByIdAndUpdate(id, {
+            bookedSeats: bookedSeats
+        });
+    } catch (error) {
+        console.log(error)
+    }
+    res.json({ status: "seat booked" })
+})
 
 module.exports = router;

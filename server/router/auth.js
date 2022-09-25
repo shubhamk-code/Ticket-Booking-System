@@ -268,27 +268,69 @@ router.post('/addshows', async (req, res) => {
     res.status(201).json("show added successfully")
 })
 
+// router.get('/showdetails/:id', async (req, res) => {
+//     let id = req.params.id
+//     let time = req.params.body
+//     Movie.aggregate([
+//         { "$addFields": { "searchId": { "$toObjectId": id } } },
+//         {
+//             $lookup: {
+//                 from: "shows",
+//                 localField: "searchId",
+//                 foreignField: "movieId",
+//                 as: "movie_shows"
+//             }
+//         }]).exec((err, result) => {
+//             if (err) {
+//                 res.send(err);
+//             }
+//             if (result) {
+//                 res.send({
+//                     data: result
+//                 })
+//             }
+//         })
+// })
+
+
+//search with time
 router.get('/showdetails/:id', async (req, res) => {
     let id = req.params.id
+    let time = req.body.time
     Movie.aggregate([
         { "$addFields": { "searchId": { "$toObjectId": id } } },
         {
+            $match: {
+                "_id": mongoose.Types.ObjectId(id)
+            }
+        }
+        ,
+        {
             $lookup: {
                 from: "shows",
-                localField: "searchId",
-                foreignField: "movieId",
-                as: "movie_shows"
+                localField: "first_show",
+                foreignField: "time",
+                as: "movie_show_at"
             }
-        }]).exec((err, result) => {
-            if (err) {
-                res.send(err);
-            }
-            if (result) {
-                res.send({
-                    data: result
-                })
-            }
-        })
+        }
+        // {
+        //     $lookup: {
+        //         from: "movie_shows",
+        //         localField: time,
+        //         foreignField: "time",
+        //         as: "movie_shows_at"
+        //     }
+        // }
+    ]).exec((err, result) => {
+        if (err) {
+            res.send(err);
+        }
+        if (result) {
+            res.send({
+                data: result
+            })
+        }
+    })
 })
 
 router.post('/bookseats/:id', async (req, res) => {

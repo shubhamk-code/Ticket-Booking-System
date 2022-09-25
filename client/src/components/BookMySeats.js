@@ -13,6 +13,10 @@ const BookMySeats = () => {
   const [platinumSeats, setPlatinumSeats] = useState([])
   const [silverSeats, setSilverSeats] = useState([])
   const [goldSeats, setGoldSeats] = useState([])
+  const [platinumRate, setPlatinumRate] = useState([])
+  const [goldRate, setGoldRate] = useState([])
+  const [silverRate, setSilverRate] = useState([])
+  const [ticketFare, setTicketFare] = useState([])
   const [unAvailableSeats, setUnAvailableSeats] = useState([])
   const [availableSeats, setAvailableSeats] = useState([])
   const [bookedSeats, setBookedSeats] = useState([])
@@ -40,12 +44,18 @@ const BookMySeats = () => {
             setSilverSeats(show.silverRows)
             setGoldSeats(show.goldRows)
             setUnAvailableSeats(show.bookedSeats)
+            setPlatinumRate(show.platinumRate)
+            setGoldRate(show.goldRate)
+            setSilverRate(show.silverRate)
           } else {
             setShowData([])
             setPlatinumSeats([])
             setSilverSeats([])
             setGoldSeats([])
             setUnAvailableSeats([])
+            setPlatinumRate([])
+            setGoldRate([])
+            setSilverRate([])
           }
         });
       })
@@ -69,6 +79,21 @@ const BookMySeats = () => {
       }
     }
   }
+  // const fare = 0;
+  // const calculateTotalFare = () => {
+  //   bookedSeats.forEach((seat) => {
+  //     if (seat.split('-')[0] == 'P') {
+  //       fare = fare + platinumRate;
+  //     }
+  //     else if (seat.split('-')[0] == 'S') {
+  //       fare = fare + silverRate;
+  //     }
+  //     else if (seat.split('-')[0] == 'G') {
+  //       fare = fare + goldRate;
+  //     }
+  //   })
+  // return fare;
+  // }
 
   const confirm_booking = () => {
 
@@ -86,16 +111,16 @@ const BookMySeats = () => {
     setBookedStatus('You have successfully booked the following seats:')
     setUnAvailableSeats([...unAvailableSeats, ...bookedSeats])
     bookedSeats.forEach((seat) => {
-      console.log(unAvailableSeats)
       setBookedStatus((prevState) => {
         return prevState + seat + ' '
       })
     })
+    // setTicketFare(calculateTotalFare())
     const newAvailableSeats = availableSeats.filter(
       (seat) => !bookedSeats.includes(seat),
     )
     setAvailableSeats(newAvailableSeats)
-    setBookedSeats([])
+    setBookedSeats('')
     setNumberOfSeats(0)
   }
 
@@ -132,7 +157,7 @@ const BookMySeats = () => {
               className="card d-flex justify-content-center align-items-center"
               style={{ width: '68vw' }}
             >
-              <h4>Platinum</h4>
+              <h4>Platinum:{platinumRate}</h4>
               <Seats
                 values={platinumSeats}
                 availableSeats={availableSeats}
@@ -145,7 +170,7 @@ const BookMySeats = () => {
               className="card d-flex justify-content-center align-items-center"
               style={{ width: '68vw' }}
             >
-              <h4>Gold</h4>
+              <h4>Gold:{goldRate}</h4>
               <Seats
                 values={goldSeats}
                 availableSeats={availableSeats}
@@ -158,7 +183,7 @@ const BookMySeats = () => {
               className="card d-flex justify-content-center align-items-center"
               style={{ width: '68vw' }}
             >
-              <h4>Silver</h4>
+              <h4>Silver:{silverRate}</h4>
               <Seats
                 values={silverSeats}
                 availableSeats={availableSeats}
@@ -173,6 +198,8 @@ const BookMySeats = () => {
       <div className="row d-flex justify-content-center">
         <div className="col-1">
           <button className="btn btn-primary" onClick={confirm_booking}>Book seats</button>
+        </div>
+        <div className="row text-center">
           <p>{bookedStatus}</p>
         </div>
       </div>

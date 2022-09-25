@@ -294,11 +294,17 @@ router.get('/showdetails/:id', async (req, res) => {
 router.post('/bookseats/:id', async (req, res) => {
     let id = req.params.id;
     let bookedSeats = req.body.bookedSeats;
-    console.log(bookedSeats);
     try {
-        await Show.findByIdAndUpdate(id, {
-            bookedSeats: bookedSeats
-        });
+        for (var i = 0; i < bookedSeats.length; i++) {
+            console.log("adding")
+            await Show.findOneAndUpdate({
+                _id: id
+            }, {
+                $push: {
+                    bookedSeats: bookedSeats[i]
+                }
+            });
+        }
     } catch (error) {
         console.log(error)
     }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Seats from './Seats'
 import { useParams } from 'react-router-dom'
-import Axios from 'axios'
 import axios from 'axios'
+import Axios from 'axios'
 
 const BookMySeats = () => {
   const movieId = useParams()
@@ -40,6 +40,12 @@ const BookMySeats = () => {
             setSilverSeats(show.silverRows)
             setGoldSeats(show.goldRows)
             setUnAvailableSeats(show.bookedSeats)
+          } else {
+            setShowData([])
+            setPlatinumSeats([])
+            setSilverSeats([])
+            setGoldSeats([])
+            setUnAvailableSeats([])
           }
         });
       })
@@ -93,67 +99,83 @@ const BookMySeats = () => {
     setNumberOfSeats(0)
   }
 
+  const showDetails = (e) => {
+    getShowDetails()
+  }
+
   return (
     <React.Fragment>
-      <div className="row">
-        <p>How many seats would you like to book?</p>
-        <input
-          value={numberOfSeats}
-          onChange={(event) => setNumberOfSeats(event.target.value)}
-        />
-        <p>Select Date?</p>
-        <input
-          type="date"
-          value={ticketDate}
-          onChange={(event) => setTicketDate(event.target.value)}
-          onClick={getShowDetails}
-        />
+      <div className="row d-flex justify-content-center">
+        <div className="col-3">
+          <input type="text" className="form-control" id="exampleInputPassword1"
+            placeholder="Enter seats"
+            value={numberOfSeats}
+            onChange={(event) => setNumberOfSeats(event.target.value)}
+          />
+        </div>
+        <div className="col-3">
+          <input type="date" className="form-control" id="exampleInputPassword1"
+            value={ticketDate}
+            onChange={(event) => setTicketDate(event.target.value)}
+          />
+        </div>
+        <div className="col-3 d-flex justify-content-center">
+          <button type="submit" className="btn btn-primary"
+            style={{ width: "30vw" }}
+            onClick={showDetails}>Check Availability</button>
+        </div>
       </div>
-      <div className="d-flex justify-content-center">
-        <div className="card p-2" style={{ width: '80vw' }}>
-          <div
-            className="card d-flex justify-content-center align-items-center"
-            style={{ width: '68vw' }}
-          >
-            <h4>Platinum</h4>
-            <Seats
-              values={platinumSeats}
-              availableSeats={availableSeats}
-              unAvailableSeats={unAvailableSeats}
-              bookedSeats={bookedSeats}
-              addSeat={addSeat}
-            />
-          </div>
-          <div
-            className="card d-flex justify-content-center align-items-center"
-            style={{ width: '68vw' }}
-          >
-            <h4>Gold</h4>
-            <Seats
-              values={goldSeats}
-              availableSeats={availableSeats}
-              unAvailableSeats={unAvailableSeats}
-              bookedSeats={bookedSeats}
-              addSeat={addSeat}
-            />
-          </div>
-          <div
-            className="card d-flex justify-content-center align-items-center"
-            style={{ width: '68vw' }}
-          >
-            <h4>Silver</h4>
-            <Seats
-              values={silverSeats}
-              availableSeats={availableSeats}
-              unAvailableSeats={unAvailableSeats}
-              bookedSeats={bookedSeats}
-              addSeat={addSeat}
-            />
+      <div className="row d-flex justify-content-center">
+        <div className="d-flex justify-content-center">
+          <div className="card p-2" style={{ width: '80vw' }}>
+            <div
+              className="card d-flex justify-content-center align-items-center"
+              style={{ width: '68vw' }}
+            >
+              <h4>Platinum</h4>
+              <Seats
+                values={platinumSeats}
+                availableSeats={availableSeats}
+                unAvailableSeats={unAvailableSeats}
+                bookedSeats={bookedSeats}
+                addSeat={addSeat}
+              />
+            </div>
+            <div
+              className="card d-flex justify-content-center align-items-center"
+              style={{ width: '68vw' }}
+            >
+              <h4>Gold</h4>
+              <Seats
+                values={goldSeats}
+                availableSeats={availableSeats}
+                unAvailableSeats={unAvailableSeats}
+                bookedSeats={bookedSeats}
+                addSeat={addSeat}
+              />
+            </div>
+            <div
+              className="card d-flex justify-content-center align-items-center"
+              style={{ width: '68vw' }}
+            >
+              <h4>Silver</h4>
+              <Seats
+                values={silverSeats}
+                availableSeats={availableSeats}
+                unAvailableSeats={unAvailableSeats}
+                bookedSeats={bookedSeats}
+                addSeat={addSeat}
+              />
+            </div>
           </div>
         </div>
       </div>
-      <button onClick={confirm_booking}>Book seats</button>
-      <p>{bookedStatus}</p>
+      <div className="row d-flex justify-content-center">
+        <div className="col-1">
+          <button className="btn btn-primary" onClick={confirm_booking}>Book seats</button>
+          <p>{bookedStatus}</p>
+        </div>
+      </div>
     </React.Fragment>
   )
 }

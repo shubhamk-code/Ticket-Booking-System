@@ -34,12 +34,12 @@ function MovieCard(props) {
             if (props.data !== "Movie Details") {
                 return (
                     <>
-                        <div className="card mt-5 me-5">
-                            <img src={image} className="card-img-top card_image" alt="Not found" />
+                        <div className="card mt-5 me-5" style={{ "width": "30vw" }}>
+                            <img src={image} className="card-img-top card_image" alt="Not found" style={{ "height": "200px", "width": "250px" }} />
                             {/* <img src={`data:image/jpeg;base64,${base64}`} className="card-img-top card_image" alt="Not found" /> */}
                             {/* <img width='500' height='200' src={`data:image/png;base64,${image}`} alt="Not found" /> */}
                             {/* <img width='500' height='200' src={URL.createObjectURL(`data:image/png;base64,${image}`)} alt="Not found" /> */}
-                            <div className="card-body shadow">
+                            <div className="card-body shadow" style={{ "width": "30vw" }}>
                                 <p className="text-capitalize"><label className="me-2 fw-bold">Movie:</label>{name}</p>
                                 <p><label className="me-2 fw-bold">Actors:</label>{actors_name}</p>
                                 <p><label className="me-2 fw-bold">Director:</label>{director}</p>
@@ -51,10 +51,10 @@ function MovieCard(props) {
             } else {
                 return (
                     <>
-                        <div className="card mt-5 me-5">
+                        <div className="card mt-5 me-5" style={{ "height": "25vw" }}>
                             {/* <img src={`data:image/png;base64,${base64}`} className="card-img-top card_image" alt="Not found" /> */}
-                            <img src={image} className="card-img-top card_image" alt="Not found" />
-                            <div className="card-body shadow">
+                            <img src={image} className="card-img-top card_image" alt="Not found" style={{ "height": "200px", "width": "250px" }} />
+                            <div className="card-body shadow" style={{ "width": "250px" }}>
                                 <p className="text-capitalize"><label className="me-2 fw-bold">Movie:</label>{name}</p>
                                 <p><label className="me-2 fw-bold">Actors:</label>{actors_name}</p>
                                 <p><label className="me-2 fw-bold">Director:</label>{director}</p>

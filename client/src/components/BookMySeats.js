@@ -10,17 +10,20 @@ const BookMySeats = () => {
   const [showData, setShowData] = useState([])
   const [numberOfSeats, setNumberOfSeats] = useState(0)
   const [ticketDate, setTicketDate] = useState(new Date().toISOString().slice(0, 10))
+  const [ticketTimes, setTicketTimes] = useState([])
   const [platinumSeats, setPlatinumSeats] = useState([])
   const [silverSeats, setSilverSeats] = useState([])
   const [goldSeats, setGoldSeats] = useState([])
   const [platinumRate, setPlatinumRate] = useState([])
   const [goldRate, setGoldRate] = useState([])
   const [silverRate, setSilverRate] = useState([])
-  const [ticketFare, setTicketFare] = useState([])
+  const [time, setTime] = useState("")
   const [unAvailableSeats, setUnAvailableSeats] = useState([])
   const [availableSeats, setAvailableSeats] = useState([])
   const [bookedSeats, setBookedSeats] = useState([])
   const [bookedStatus, setBookedStatus] = useState('')
+
+  // const [rerender, setRerender] = useState(false);
 
   useEffect(() => {
     const url = `/showdetails/${movieId.id}`
@@ -30,23 +33,49 @@ const BookMySeats = () => {
       })
       .catch((err) => console.log(err))
   }, [])
+
   const movie_shows = getData.map(data => {
     return data.movie_shows
   })
 
+
+
+
+  useEffect(() => {
+    const getDatesForDate = () => {
+      if (showData != []) {
+        movie_shows.map(shows => {
+          shows.map(show => {
+            setTicketTimes([])
+            if (show.show.split('T')[0] == ticketDate) {
+              ticketTimes.push(show.time)
+            }
+          })
+        })
+        setTicketTimes([...new Set(ticketTimes)])
+      }
+    }
+    console.log(ticketTimes)
+    getDatesForDate()
+    console.log(ticketTimes)
+  }, [ticketDate])
+
   const getShowDetails = () => {
     if (movie_shows !== null) {
-      movie_shows.map(shows => {
-        shows.map(show => {
+      movie_shows.some(shows => {
+        shows.some(show => {
           if (show.show.split('T')[0] == ticketDate) {
-            setShowData(show)
-            setPlatinumSeats(show.platinumRows)
-            setSilverSeats(show.silverRows)
-            setGoldSeats(show.goldRows)
-            setUnAvailableSeats(show.bookedSeats)
-            setPlatinumRate(show.platinumRate)
-            setGoldRate(show.goldRate)
-            setSilverRate(show.silverRate)
+            if (show.time == time) {
+              setShowData(show)
+              setPlatinumSeats(show.platinumRows)
+              setSilverSeats(show.silverRows)
+              setGoldSeats(show.goldRows)
+              setUnAvailableSeats(show.bookedSeats)
+              setPlatinumRate(show.platinumRate)
+              setGoldRate(show.goldRate)
+              setSilverRate(show.silverRate)
+              return true;
+            }
           } else {
             setShowData([])
             setPlatinumSeats([])
@@ -56,12 +85,16 @@ const BookMySeats = () => {
             setPlatinumRate([])
             setGoldRate([])
             setSilverRate([])
+            return false;
           }
-        });
+        })
+        return true;
+        // console.log("kawthekar")
       })
     }
   }
-  console.log(showData)
+  // console.log(showData)
+
 
   const addSeat = (event) => {
     if (numberOfSeats && !event.target.className.includes('disabled')) {
@@ -96,7 +129,6 @@ const BookMySeats = () => {
   // }
 
   const confirm_booking = () => {
-
     try {
       if (bookedSeats.length > 0) {
         axios.post(`/bookseats/${showData._id}`, {
@@ -124,10 +156,6 @@ const BookMySeats = () => {
     setNumberOfSeats(0)
   }
 
-  const showDetails = (e) => {
-    getShowDetails()
-  }
-
   return (
     <React.Fragment>
       <div className="row d-flex justify-content-center">
@@ -144,10 +172,31 @@ const BookMySeats = () => {
             onChange={(event) => setTicketDate(event.target.value)}
           />
         </div>
-        <div className="col-3 d-flex justify-content-center">
-          <button type="submit" className="btn btn-primary"
-            style={{ width: "30vw" }}
-            onClick={showDetails}>Check Availability</button>
+        <div className="col-1">
+
+
+
+          {
+            ticketTimes.map(stime => {
+              return <div class="form-check">
+                <input class="form-check-input" type="radio" name="time" value={stime}
+                  onChange={event => setTime(event.target.value)}
+                />
+                <label class="form-check-label" >
+                  {stime}
+                </label>
+              </div>
+              // onClick={setTime(e.target.value)}
+            })
+          }
+
+
+
+        </div>
+        <div className="col-3 justify-content-center">
+          <button type="submit" className=" form-control btn btn-primary"
+            style={{ width: "15vw" }}
+            onClick={getShowDetails}>Check Availability</button>
         </div>
       </div>
       <div className="row d-flex justify-content-center">
